@@ -1,0 +1,51 @@
+<div class="">
+  <form>
+    <div class="row" ng-show="$parent.pageitemdetailsdata.orientation">
+      <div class="col-xs-4 col-xs-offset-1">
+        <label for="">Orientation</label>
+        <select class="form-control" ng-model="$parent.pageitemdetailsdata.orientation">
+          <option value="h">Horizontal</option>
+          <option value="v">Vertical</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1" ng-show="$parent.pageitemdetailsdata.orientation">
+        <div class="jumbotron" ng-hide="$parent.pageitemdetailsdata.asset.length > 0">
+          <h3>Add media files to your profile</h3>
+          <p>
+            Now add media files to your profile. These files is what will display in the published output.
+          </p>
+        </div>
+        <div class="row">
+          <div ng-repeat="asset in pageitemdetailsdata.asset" ng-class='"mg-orient-"+$parent.pageitemdetailsdata.orientation'>
+            <img ng-src="{{appmetadata.clientassetpath + asset.name}}" alt="No Title image selected" style="max-height:100px;margin:0px 2px 2px 0px;"/>
+          </div>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary btn-sm" ng-click="openassetBrowserDialog('chooseTitleImage')">Add media file</button>
+        </div>
+      </div>
+      <div class="col-xs-10 col-xs-offset-1" ng-hide="$parent.pageitemdetailsdata.orientation">
+        <div class="jumbotron">
+          <h3>Create a media profile</h3>
+          <p>
+            Use this page type to create media profiles. Then attach these profiles to your pages (content or aggregate) to display the updatable media on those pages.
+          </p>
+          <p>
+            The benefit of this approach is that when you update (and publish) a media profile, the updates will be immediately visible in the host pages.
+          </p>
+          <p>
+            First, start off with deciding the orientation (vertical or horizontal) of the media group. This is how the media will display in the published output.
+          </p>
+          <label for="">Orientation</label>
+          <select class="form-control" ng-model="$parent.pageitemdetailsdata.orientation">
+            <option value="h">Horizontal</option>
+            <option value="v">Vertical</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

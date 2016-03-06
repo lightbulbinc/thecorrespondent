@@ -1,0 +1,96 @@
+<div class="">
+  <form>
+    <div class="row">
+      <div class="form-group col-xs-10">
+        <div class="row" style="margin:0px 5px 0px 5px;" ng-hide="1">
+          <label for="subtitle">Subtitle</label>
+          <input type="text" ng-model="pageitemdetailsdata.subtitle" class="form-control" id="subtitle" placeholder="Subtitle">
+        </div>
+        <div class="row" style="margin:5px 5px 0px 5px;">
+          <h4 class="text-primary">Choose Advertizing profiles</h4>
+          <div class="row">
+            <div class="row" style="border:1px solid black;margin:5px 0px 5px 0px;">
+              <div class="col-xs-4">
+                <p>First vertical advertising profile</p>
+                <div ng-repeat="aggregateitem in pageitemdetailsdata.aggregatecolumn[0].aggregateitem | orderBy:'position'" style="margin:2px;padding:5px;border:1px solid;">
+                  <p ng-if="aggregateitem.tag.length === 1">
+                    <span class="glyphicon glyphicon-tag"></span>
+                    {{aggregateitem.tag[0].name}}
+                    <button type="button" class="btn btn-danger btn-xs" title="Remove this tag" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[0])"><span class="glyphicon glyphicon-minus"></span></button>
+                  </p>
+                  <p ng-if="aggregateitem.pageitem.length === 1">
+                    <span class="glyphicon glyphicon-file"></span>
+                    {{aggregateitem.pageitem[0].title}}
+                    <button type="button" class="btn btn-danger btn-xs" title="Remove this story" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[0])"><span class="glyphicon glyphicon-minus"></span></button>
+                  </p>
+                </div>
+                <button type="button" class="btn btn-primary btn-xs"
+                  ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[0],"pageitem","pimediagroup")'
+                  title='Add a single story to the aggregate'
+                   ng-hide="pageitemdetailsdata.aggregatecolumn[0].aggregateitem.length === 1">
+                   Add
+                 </button>
+              </div>
+              <div class="col-xs-4">
+                <p>Second vertical advertising profile</p>
+                <div ng-repeat="aggregateitem in pageitemdetailsdata.aggregatecolumn[1].aggregateitem | orderBy:'position'" style="margin:2px;padding:5px;border:1px solid;">
+                  <p ng-if="aggregateitem.tag.length === 1">
+                    <span class="glyphicon glyphicon-tag"></span>
+                    {{aggregateitem.tag[0].name}}
+                    <button type="button" class="btn btn-danger btn-xs" title="Remove this tag" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[1])"><span class="glyphicon glyphicon-minus"></span></button>
+                  </p>
+                  <p ng-if="aggregateitem.pageitem.length === 1">
+                    <span class="glyphicon glyphicon-file"></span>
+                    {{aggregateitem.pageitem[0].title}}
+                    <button type="button" class="btn btn-danger btn-xs" title="Remove this story" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[1])"><span class="glyphicon glyphicon-minus"></span></button>
+                  </p>
+                </div>
+                <button type="button" class="btn btn-primary btn-xs"
+                  ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[1],"pageitem","pimediagroup")'
+                  title='Add a single story to the aggregate'
+                   ng-hide="pageitemdetailsdata.aggregatecolumn[1].aggregateitem.length === 1">
+                   Add
+                 </button>
+              </div>
+              <div class="col-xs-4">
+                <p>Horizontal advertising profile</p>
+                <div ng-repeat="aggregateitem in pageitemdetailsdata.aggregatecolumn[2].aggregateitem | orderBy:'position'" style="margin:2px;padding:5px;border:1px solid;">
+                  <p ng-if="aggregateitem.tag.length === 1">
+                    <span class="glyphicon glyphicon-tag"></span>
+                    {{aggregateitem.tag[0].name}}
+                    <button type="button" class="btn btn-danger btn-xs" title="Remove this tag" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[2])"><span class="glyphicon glyphicon-minus"></span></button>
+                  </p>
+                  <p ng-if="aggregateitem.pageitem.length === 1">
+                    <span class="glyphicon glyphicon-file"></span>
+                    {{aggregateitem.pageitem[0].title}}
+                    <button type="button" class="btn btn-danger btn-xs" title="Remove this story" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[2])"><span class="glyphicon glyphicon-minus"></span></button>
+                  </p>
+                </div>
+                <button type="button" class="btn btn-primary btn-xs"
+                  ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[2],"pageitem","pimediagroup")'
+                  title='Add a single story to the aggregate'
+                   ng-hide="pageitemdetailsdata.aggregatecolumn[2].aggregateitem.length === 1">
+                   Add
+                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-2" style="border:1px solid" ng-if="pageitemdetailsdata.titleimage">
+        <img ng-click="openassetBrowserDialog('chooseTitleImage')" ng-src="{{appmetadata.clientassetpath + pageitemdetailsdata.titleimage}}" alt="No Title image selected" style="height:70px;width:100%"/>
+        <button type="button" class="btn btn-primary btn-sm" ng-click="openassetBrowserDialog('chooseTitleImage')">Change the title image</button>
+      </div>
+      <div class="col-xs-2" style="border:1px solid" ng-hide="pageitemdetailsdata.titleimage">
+        <span class="glyphicon glyphicon-camera" style='font-size:40px;'>
+        </span>
+        <div style="font-size:14px;">No title image currently selected</div>
+        <button type="button" class="btn btn-primary btn-sm" ng-click="openassetBrowserDialog('chooseTitleImage')">Choose a title image</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <textarea rows=1 storyckeditor="editorOptions" name=storyeditor ng-model="pageitemdetailsdata.body"></textarea>
+    </div>
+  </form>
+</div>

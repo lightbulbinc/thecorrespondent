@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col-xs-9 col-xs-offset-1">
+    <div class="row" style="border:1px solid black;padding:5px 0px 5px 0px;">
+      <div class="col-xs-4" style="border-right:1px solid black;">
+        <div ng-repeat="aggregateitem in pageitemdetailsdata.aggregatecolumn[0].aggregateitem | orderBy:'position'" style="margin:2px;padding:5px;border:1px solid;">
+          <p ng-if="aggregateitem.tag.length === 1">
+            <span class="glyphicon glyphicon-tag"></span>
+            {{aggregateitem.tag[$index].name}}
+            <button type="button" class="btn btn-danger btn-xs" title="Remove this tag" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[0])"><span class="glyphicon glyphicon-minus"></span></button>
+          </p>
+          <p ng-if="aggregateitem.pageitem.length === 1">
+            <span class="glyphicon glyphicon-file"></span>
+            {{aggregateitem.pageitem[0].title}}
+            <button type="button" class="btn btn-danger btn-xs" title="Remove this story" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[0])"><span class="glyphicon glyphicon-minus"></span></button>
+          </p>
+        </div>
+        <button type="button" class="btn btn-primary btn-xs"
+          ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[0],"pageitem","picontent")'
+          title='Add a single story to the aggregate'
+           ng-hide="pageitemdetailsdata.aggregatecolumn[0].aggregateitem.length === 5">
+           Add story ({{5-pageitemdetailsdata.aggregatecolumn[0].aggregateitem.length}})
+         </button>
+      </div>
+      <div class="col-xs-4" style="border-right:1px solid black;">
+        <div ng-repeat="aggregateitem in pageitemdetailsdata.aggregatecolumn[1].aggregateitem | orderBy:'position'" style="margin:2px;padding:5px;border:1px solid;">
+          <p ng-if="aggregateitem.tag.length === 1">
+            <span class="glyphicon glyphicon-tag"></span>
+            {{aggregateitem.tag[0].name}}
+            <button type="button" class="btn btn-danger btn-xs" title="Remove this tag" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[1])"><span class="glyphicon glyphicon-minus"></span></button>
+          </p>
+          <p ng-if="aggregateitem.pageitem.length === 1">
+            <span class="glyphicon glyphicon-file"></span>
+            {{aggregateitem.pageitem[0].title}}
+            <button type="button" class="btn btn-danger btn-xs" title="Remove this story" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[1])"><span class="glyphicon glyphicon-minus"></span></button>
+          </p>
+        </div>
+        <button type="button" class="btn btn-primary btn-xs"
+          ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[1],"pageitem","picontent")'
+          title='Add a single story to the aggregate'
+           ng-hide="pageitemdetailsdata.aggregatecolumn[1].aggregateitem.length === 2">
+           Add story ({{2-pageitemdetailsdata.aggregatecolumn[1].aggregateitem.length}})
+         </button>
+      </div>
+      <div class="col-xs-4" style="">
+        <div ng-repeat="aggregateitem in pageitemdetailsdata.aggregatecolumn[2].aggregateitem | orderBy:'position'" style="margin:2px;padding:5px;border:1px solid;">
+          <p ng-if="aggregateitem.tag.length === 1">
+            <span class="glyphicon glyphicon-tag"></span>
+            {{aggregateitem.tag[0].name}}
+            <button type="button" class="btn btn-danger btn-xs" title="Remove this tag" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[2])"><span class="glyphicon glyphicon-minus"></span></button>
+          </p>
+          <p ng-if="aggregateitem.pageitem.length === 1">
+            <span class="glyphicon glyphicon-file"></span>
+            {{aggregateitem.pageitem[0].title}}
+            <button type="button" class="btn btn-danger btn-xs" title="Remove this story" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[2])"><span class="glyphicon glyphicon-minus"></span></button>
+          </p>
+        </div>
+        <button type="button" class="btn btn-primary btn-xs"
+          ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[2],"pageitem","pimediagroup")'
+          title='Add a single story to the aggregate'
+           ng-hide="pageitemdetailsdata.aggregatecolumn[2].aggregateitem.length === 2">
+           Add media - Advert ({{2-pageitemdetailsdata.aggregatecolumn[2].aggregateitem.length}})
+         </button>
+      </div>
+    </div>
+    <div class="row" style="border:1px solid black;padding:5px 0px 5px 0px;">
+      <div class="col-xs-3 col-xs-offset-3">
+        <div ng-repeat="aggregateitem in pageitemdetailsdata.aggregatecolumn[3].aggregateitem | orderBy:'position'" style="margin:2px;padding:5px;border:1px solid;">
+          <p ng-if="aggregateitem.tag.length === 1">
+            <span class="glyphicon glyphicon-tag"></span>
+            {{aggregateitem.tag[0].name}}
+            <button type="button" class="btn btn-danger btn-xs" title="Remove this tag" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[3])"><span class="glyphicon glyphicon-minus"></span></button>
+          </p>
+          <p ng-if="aggregateitem.pageitem.length === 1">
+            <span class="glyphicon glyphicon-file"></span>
+            {{aggregateitem.pageitem[0].title}}
+            <button type="button" class="btn btn-danger btn-xs" title="Remove this story" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[3])"><span class="glyphicon glyphicon-minus"></span></button>
+          </p>
+        </div>
+        <button type="button" class="btn btn-primary btn-xs"
+          ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[3],"pageitem","pimediagroup")'
+          title='Add a single story to the aggregate'
+           ng-hide="pageitemdetailsdata.aggregatecolumn[3].aggregateitem.length === 1">
+           Add media - Advert (1)
+         </button>
+      </div>
+    </div>
+  </div>
+</div>

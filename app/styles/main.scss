@@ -1,0 +1,32 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+.mg-orient-h {
+  float: left;
+}
+.mg-orient-v {
+  float: none;
+}
+
+
+.assetlist{
+  float:left;
+  margin: 2px;
+  padding: 4px 2px 4px 0px;
+  >img{
+    max-height:70px;
+  }
+  >img:hover{
+    -moz-box-shadow: 0 0 10px black;
+    -webkit-box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px black;
+  }
+}
+.dontshowagain {
+  margin-left: 10px;
+}
+
+.label-as-badge {
+    border-radius: 1em;
+}

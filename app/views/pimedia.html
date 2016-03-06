@@ -1,0 +1,22 @@
+<div class="">
+  <form>
+    <div class="row">
+      <div class="col-xs-4 col-xs-offset-2" ng-show="$parent.pageitemdetailsdata.titleimageurl">
+        <img ng-click="openassetBrowserDialog('chooseTitleImage')" ng-src="{{pageitemdetailsdata.titleimageurl}}" alt="No Title image selected" style="max-height:300px"/>
+        <p>
+          <button type="button" class="btn btn-primary btn-sm" ng-click="openassetBrowserDialog('chooseTitleImage')">Choose another media file</button>
+        </p>
+      </div>
+      <div class="col-xs-10 col-xs-offset-1" ng-hide="$parent.pageitemdetailsdata.titleimageurl">
+        <div class="jumbotron">
+          <h2>Choose an asset to define your media page</h2>
+          <p>
+            Use this page type to create pages such as video pages or advertisements that will display on other aggregate pages.
+          </p>
+          <p><button type="button" class="btn btn-primary btn-sm" ng-click="openassetBrowserDialog('chooseTitleImage')">Choose a media file</button></p>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

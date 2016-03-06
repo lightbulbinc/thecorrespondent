@@ -1,0 +1,465 @@
+<div>
+  <div class="navbar navbar-default" role="navigation">
+    <div class="fluid container">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="">Page manager</a></li>
+        <li ng-if="userrole==='a'"><a ng-href="#/usermanager">User manager</a></li>
+        <!-- TODO:
+        full on HACK:
+        Need to put in the appseciton code that will be used to display page menus based on user profiling
+        -->
+        <!-- <li><a ng-href="#/usermanager">User manager</a></li> -->
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a ng-href="#/login">Log out</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title='Displays the list of server alerts that you have received.'>Alerts<span ng-class="badgeLabel()" ng-if="appalerts.length>0">{{appalerts.length}}</span><span class="caret" ng-if="appalerts.length>0"></span></a>
+          <ul class="dropdown-menu" style="width: 400px; max-height: 600px; overflow: auto" ng-if="appalerts.length>0">
+            <li style="padding:10px;font-size:12px;" ng-repeat="appalert in appalerts">
+              <div>{{appalert.msg}} <u><a ng-href="../{{appalert.link}}" target="_blank">{{appalert.title}}</a></u> is available live.</div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-xs-3">
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="" ng-click="listview='pageview'"  role="tab" data-toggle="tab">Page view</a></li>
+      <li role="presentation" ng-show="userrole!=='w'"><a href="" ng-click="listview='sitemenuview'"  role="tab" data-toggle="tab">Site menu</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" style="margin-top:2px;">
+        <!-- list of pages -->
+        <div ng-show="listview==='pageview'">
+          <div class="row">
+            <div class="col-xs-6">
+              <span style="font-size:12px;font-weight:bold;"><span class="glyphicon glyphicon-filter"></span>Filter pages by title</span>
+              <input type="text" class="form-control" ng-model="pageitemtitle">
+            </div>
+            <div class="col-xs-6">
+              <span style="font-size:12px;font-weight:bold;"><span class="glyphicon glyphicon-filter"></span>Filter pages by template</span>
+              <select class="form-control" ng-model="pagetypefilter">
+                <option ng-value="''" selected="selected">All</option>
+                <option ng-value=pagetemplate.pagetype ng-repeat="pagetemplate in pagetemplates">{{pagetemplate.title}}s</option>
+              </select>
+            </div>
+          </div>
+          <ul class="list-group" style="height:600px;overflow: scroll;">
+            <li ng-if="pagelistupdating" style='font-size:26px;color:#EE3030;'>Updating the page list...</li>
+            <button type="button" ng-click='getthisitemdetails(pageitem.id)' ng-class="pagelistitemstyle(pageitem.id)" ng-repeat="pageitem in pageitems | filter:{pagetype:pagetypefilter,title:pageitemtitle}">{{pageitem.title}}</button>
+          </ul>
+        </div>
+
+        <!-- list of pages - END -->
+        <div ng-show="listview==='sitemenuview'">
+          <div class="" ng-if="sitemenu.length==0">
+            <p>
+              Your site currently does not have a menu. Click the button below to get started.
+            </p>
+            <button type="button" class="btn btn-default" ng-click="addmenu()">Create site menu</button>
+          </div>
+          <div style="padding:0px 0px 5px 15px;">
+            <button type="button" class="btn btn-primary btn-sm" title="Publish menu" ng-click="publishmenu()"><span class="glyphicon glyphicon-bullhorn"></span> Publish menu</button>
+          </div>
+          <div class="" ng-repeat="menu in sitemenu" style="margin-bottom:3px;">
+            {{menu.title}}
+            <button type="button" class="btn btn-primary btn-xs" title="Add menu title" ng-click="addmenu(menu)"><span class="glyphicon glyphicon-plus"></span></button>
+            <button ng-show="menu.menuitem.length==0" type="button" class="btn btn-success btn-xs" title="Add menu item" ng-click="addmenuitem(menu)"><span class="glyphicon glyphicon-plus"></span></button>
+            <button type="button" class="btn btn-danger btn-xs" title="Remove menu title" ng-click="removemenu(menu)"><span class="glyphicon glyphicon-minus"></span></button>
+            <div class="" ng-repeat="menuitem in menu.menuitem" style="margin:2px 0px 2px 15px;">
+              <button type="button" ng-click='getthisitemdetails(menuitem.pageitem[0].id)'
+                ng-class="menulistitemstyle(menuitem.pageitem[0].id)">{{menuitem.title}}</button>
+                <button type="button" class="btn btn-danger btn-xs" title="Remove menu item" ng-click="removemenuitem(menuitem)"><span class="glyphicon glyphicon-minus"></span></button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-9">
+    <div class="row">
+      <div class="btn-toolbar" role="toolbar" aria-label="...">
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              New <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li ng-repeat="pagetemplate in pagetemplates" ng-click="newpage(pagetemplate)"><a href="">{{pagetemplate.title}}</a></li>
+            </ul>
+          <!-- <button type="button" class="btn btn-default">Edit <span class="glyphicon glyphicon-pencil"></span></button> -->
+          <button type="button" class="btn btn-default" ng-click="save()" ng-disabled="disablesave()">Save <span class="glyphicon glyphicon-floppy-save"></span></button>
+        </div>
+        <!-- <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn btn-default" ng-disabled="cannotpublish()" ng-click="publish()">Publish <span class="glyphicon glyphicon-bullhorn"></span></button> -->
+          <!-- <button type="button" class="btn btn-default" ng-disabled="!pageitemdata">Unpublish</button> -->
+          <!-- <button type="button" class="btn btn-default" ng-click="publishall()">Publish all <span class="glyphicon glyphicon-bullhorn"></span><span class="glyphicon glyphicon-bullhorn"></span></button> -->
+        <!-- </div> -->
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn btn-default" ng-click="opentagsdialog()">Tags <span class="glyphicon glyphicon-tags"></span></button>
+        </div>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn btn-default" ng-click="openassetBrowserDialog()">Assets <span class="glyphicon glyphicon-file"></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- page item -->
+      <form ng-show="pageitemdata">
+        <div class="form-group">
+          <label for="pageitemtitle">Title</label>
+          <input ng-model="pageitemdata.title" type="text" class="form-control" id="pageitemtitle" placeholder="Title">
+        </div>
+      </form>      <!-- page item -->
+    </div>
+    <!-- page item details -->
+    <div class="row" ng-include="pagetemplate.url">
+    </div>
+    <!-- page item details - END-->
+  </div>
+
+  <!-- wait modal -->
+  <div id="waitmodal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <img src="images/wait.gif" alt="" height='200px'/>
+      </div>
+    </div>
+  </div>
+  <!-- wait modal END -->
+
+  <!-- page publish modal -->
+  <div class="modal fade bs-example-modal-sm" id="page_publish_modal"  tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Published pages</h3>
+        </div>
+        <div class="modal-body">
+          <h4 class="text-success">The page is sent for publishing.</h4>
+          <p class="text-warning">You can see the list of recently published pages/menu in the Aletrs box on the top-right corner of the console.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+
+        <div class="checkbox dontshowagain">
+          <label>
+            <input type="checkbox" value="" ng-model="dontshowdialongagain.pagepublish">
+            <span class="text-primary">Don't show me this dialog again.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- page publish END -->
+
+  <!-- menu publish modal -->
+  <div class="modal fade bs-example-modal-sm" id="menu_publish_modal"  tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Published menu</h3>
+        </div>
+        <div class="modal-body">
+          <h4 class="text-success">The menu is sent for publishing.</h4>
+          <p class="text-warning">You can see the list of recently published pages/menu in the Aletrs box on the top-right corner of the console.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- menu publish END -->
+
+  <!-- story tags modal -->
+    <div class="modal fade bs-example-modal-sm" id="storyTagsModal"  tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Tag manager</h3>
+            Use this dialog to create <button type="button" class="btn btn-default btn-sm">New <span class="glyphicon glyphicon-plus"></span></button> tags that you can then assign to stories.<br/>
+            Click <button type="button" class="btn btn-default btn-sm">Open <span class="glyphicon glyphicon-folder-open"></span></button> to view the complete list of available tags.<br/>
+            <div ng-hide="pageitemdata">
+              When you are working on a story, you will see the tags currently assigned to this story.<br/>
+            </div>
+            <div ng-show="pageitemdata">
+              If you need assign tags to this story, <button type="button" class="btn btn-default btn-sm">Open <span class="glyphicon glyphicon-folder-open"></span></button> the complete list of tags.<br/>
+              If you want to unassign a tag from a story, click the <span class="glyphicon glyphicon-minus" style='cursor: pointer;color:red'></span> to the right of the tag name.
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="btn-group" role="group" aria-label="...">
+              <!-- correspondents (role==w) cannot create tags-->
+              <button ng-if="userrole!=='w'" type="button" class="btn btn-default btn-sm" ng-click="openaddnewtagdialog()">New <span class="glyphicon glyphicon-plus"></span></button>
+              <button type="button" class="btn btn-default btn-sm" ng-click="getavailabletaglist()">Open <span class="glyphicon glyphicon-folder-open"></span></button>
+            </div>
+            <h4 ng-show="pageitemdata">List of story tags</h4>
+            <div class="row" style="margin-top:5px;">
+              <div class="col-xs-6" ng-if=" pageitemdata.tag.length > 0">
+                <table class="table">
+                  <tr ng-repeat="tag in  pageitemdata.tag">
+                    <td>
+                      <span class="bg-info" style="padding:8px 20px 8px 20px;">{{tag.name}} <span class="glyphicon glyphicon-minus" style='cursor: pointer;color:red' ng-click="unassigntagtostory(tag.id)"></span></span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-xs-12" ng-if=" pageitemdata.tag.length === 0">
+                The story currently does not have any tags assigned to it.<br>
+                To assign one or more tags to this story, click <button type="button" class="btn btn-default btn-sm">Open <span class="glyphicon glyphicon-folder-open"></span></button> to view the complete list of available tags.<br>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  ng-click='save()' data-dismiss="modal" ng-show="pageitemdata">Save</button>
+            <button type="button" class="btn btn-warning" data-dismiss="modal" ng-show="pageitemdata">Cancel</button>
+            <button type="button" class="btn btn-warning" data-dismiss="modal" ng-hide="pageitemdata">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- story tags modal -->
+
+    <!-- create tags modal -->
+      <div class="modal fade bs-example-modal-sm" id="createTagsModal"  tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add new tag</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="tagname">Tag name</label>
+                  <input type="text" class="form-control" id="tagname" placeholder="Name of tag" ng-model='newtag.name'>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" ng-click="savetag()">Save</button>
+              <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- create tags modal -->
+
+    <!-- tag list modal -->
+      <div class="modal fade bs-example-modal-sm" id="availableTagsModal"  tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">List of tags</h4>
+              <h5>This is the list of all available tags in the system</h5>
+              <div ng-show="pageitemdata">
+                If you want to assign some of these tags to stories, either select a story on the left rail or create a new story
+              </div>
+              <div ng-show="pageitemdata">
+                Click the <span class="glyphicon glyphicon-plus" style='cursor: pointer;'></span></span> next to a tag name to assign the tag to the current story<br/>
+                You can assign as many tags to a story as you want<br/>
+                After you're done assigning the tags, <button type="button" class="btn btn-primary">Close</button> the dialog.
+              </div>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <tr ng-repeat="tag in availabletaglist">
+                  <td>
+                    <span class="bg-info" style="padding:8px 20px 8px 20px;">{{tag.name}} <span ng-show="pageitemdata" class="glyphicon glyphicon-plus" style='cursor: pointer;' ng-click="assigntagtostory(tag.id)"></span></span>
+                    <!-- <span class="bg-info" style="padding:8px 20px 8px 20px;">{{tag.name}} <span class="glyphicon glyphicon-tags"></span></span> -->
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- tag list modal -->
+      <!-- layout tag list modal -->
+        <div class="modal fade bs-example-modal-sm" id="availablelayouttagModal"  tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">List of tags</h4>
+                <h5>This is the list of all available tags in the system</h5>
+                <p>
+                  Choose a tag to add to the current selected layout column.
+                </p>
+                <p>
+                  Also, choose a item type to add to the layout column.
+                </p>
+              </div>
+              <div class="modal-body">
+                <div style="height:400px;overflow:auto;">
+                  <div class="row" ng-repeat="tag in availableitemlist">
+                    <div class="radio col-xs-offset-1">
+                      <label>
+                        <input type="radio" ng-model="$parent.layoutitem" ng-value="tag" ng-click="resetselectedtag()">
+                        {{tag.name}}
+                      </label>
+                      <div ng-show="$parent.layoutitem.id === tag.id">
+                        <div class="col-xs-6">
+                          <p ng-show="showmaxlengthfield()">
+                            <label for="">Enter the maximum length of the items in the group</label>
+                            <input type="text" class="form-control" ng-model="$parent.aggregateitem.maxlength">
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="additemtolayoutcolumn()" ng-disabled="islayoutitemselected()">OK</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- layout tag list modal - END -->
+
+      <!-- layout story list modal -->
+        <div class="modal fade bs-example-modal-sm" id="availablelayoutpageitemModal"  tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">List of pages</h4>
+                <h5>This is the list of all available pages in the system</h5>
+                <p>
+                  Choose a page to add to the current selected layout column.
+                </p>
+                <p>
+                  Also, choose a item type to add to the layout column.
+                </p>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-xs-3 col-xs-offset-1">
+                    <span class="glyphicon glyphicon-filter"></span><span class="text-primary">Filter page list</span>
+
+                  </div>
+                  <div class="col-xs-6">
+                    <input type="text" class="form-control" placeholder="Enter to filter the page list" ng-model="pagetitle">
+                  </div>
+                </div>
+                <div style="height:400px;overflow:auto;">
+                  <div class="row" ng-repeat="page in availableitemlist | filter:{pagetype:selectedlayouttemplate,title:pagetitle}">
+                    <div class="radio col-xs-offset-1">
+                      <label>
+                        <input type="radio" ng-model="$parent.layoutitem" ng-value="page" ng-click="additemtolayoutcolumn()" data-dismiss="modal">
+                        {{page.title}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- layout story list modal -END -->
+
+      <!-- file browser dialog modal -->
+        <div class="modal fade" id="fileBrowserModal"  tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">application assets</h4>
+              </div>
+              <div class="modal-body">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <input type="file" id="pageasset">
+                    </div>
+                    <button type="button" ng-click="uploadfile()" class="btn btn-default">Upload <span class="glyphicon glyphicon-upload"></span></button>
+                  </div>
+                </div>
+                <div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">List of assets</h3>
+                    </div>
+                    <div class="panel-body" style="height:400px;overflow: scroll;">
+                      <div class="text-primary" ng-hide="asset.listrefreshcomplete">
+                        <h2>Refreshing image list</h2>
+                      </div>
+                      <div class="assetlist" ng-repeat="pageasset in pageassets" ng-show="asset.listrefreshcomplete">
+                        <img ng-src="{{appmetadata.clientassetpath + pageasset.name}}" ng-click="selectimage(pageasset)"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- file browser dialog modal -END -->
+
+        <!-- menu title modal -->
+        <div class="modal fade bs-example-modal-sm" id="menutitledialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Menu title</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="menutitle">Menu title</label>
+                  <input type="text" class="form-control" id="menutitle" placeholder="Menu title" ng-model='newmenu.title'>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="savemenutitle()">Save</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- menu title modal -END -->
+        <!-- menu item modal -->
+        <div class="modal fade bs-example-modal-sm" id="menuitemdialog" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Menu title</h4>
+              </div>
+              <div class="modal-body">
+                <div style="height:500px;overflow: scroll;">
+                  <div class="">
+                    <div class="" ng-repeat="pageitem in pageitems">
+                      <label>
+                        <input type="radio" ng-model="$parent.selectedpageitem" ng-value="pageitem">
+                        {{pageitem.title}}
+                      </label>
+                      <input ng-model="$parent.menuitemtitle" class="form-control" placeholder="(Optional) Enter an alternative menu item title" ng-show="$parent.selectedpageitem.id===pageitem.id">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-click="savemenuitem()">Save</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- menu item modal - END -->
+</div>

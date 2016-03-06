@@ -1,0 +1,6 @@
+bower_components/
+node_modules/
+app/services/*log
+app/services/thecorrespondent/
+.sass-cache/
+.tmp/

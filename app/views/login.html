@@ -1,0 +1,28 @@
+<div class="col-xs-6 col-xs-offset-3">
+  <div class="jumbotron">
+    <h2>Welcome to the correspondent Admin UI</h2>
+    <div class="text-info">
+      You will need a user name and password to gain access.
+    </div>
+    <div class="text-danger">
+      If you do not have one, please send a request by email to:
+    </div>
+    <p>
+    </p>
+    <form>
+      <div class="form-group">
+        <label for="username">User name</label>
+        <input type="text" class="form-control" id="username" placeholder="User name" ng-model="appuser.username">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model="appuser.password">
+      </div>
+      <button type="button" class="btn btn-primary" ng-disabled="(appuser.username === null || appuser.username === '')  || (appuser.password === null || appuser.password === '')" ng-click="loginuser()">Log in</button>
+      <p class="text-danger">
+        {{invalidusermsg}}
+      </p>
+    </form>
+  </div>
+
+</div>
