@@ -19,14 +19,35 @@ Run the following command:
 ```
 npm install
 ```
-
+# Install the Database
+1. Open a mysql app (either command line or GUI app such as HeidiSQL)
+2. Create a Database
+3. Run the following sql files:
+```
+docs/db.sql
+docs/db-insert.sql
+```
+# Update Database meta information
+1. Go the following file:
+```
+app/services/dataobjectserver/common/dbmetadata.json
+```
+2. Update the Database meta data as required
 # Starting the local php server
 1. Go to the php folder (c:/dr-nefario-setup/php)
-2. Run the following command:
+2. Run the following command (point to the cms/app dir):
  ```
 php -S localhost:9001 -t ../thecorrespondent/admin-ui-1/app
 
 ```
+# Start the grunt
+1. Go back to your cms folder
+2. Run the following command:
+ ```
+grunt serve
+
+```
+
 # Kill a process by port number (Windows)
 1. First run the following command to find out the processes running on this machine
 ```
