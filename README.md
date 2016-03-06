@@ -8,6 +8,7 @@ Is possible, run all commands on the `git bash`
 git clone https://github.com/lightbulbinc/thecorrespondent.git
 ```
 4. cd into the cloned dir
+
 # Set up bower
 Run the following command:
 ```
