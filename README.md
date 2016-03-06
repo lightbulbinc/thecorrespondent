@@ -1,10 +1,30 @@
-#Running commands
+# Running commands
 Is possible, run all commands on the `git bash`
+# Clone the repo
+1. Open the Git bash
+2. Go to the folder where you want to put your cms
+3. Run the following command:
+```
+git clone https://github.com/lightbulbinc/thecorrespondent.git
+```
+4. cd into the cloned dir
+# Set up bower
+Run the following command:
+```
+bower install
+```
+# Set up the node modules
+Run the following command:
+```
+npm install
+```
+
 # Starting the local php server
 1. Go to the php folder (c:/dr-nefario-setup/php)
 2. Run the following command:
  ```
 php -S localhost:9001 -t ../thecorrespondent/admin-ui-1/app
+
 ```
 # Kill a process by port number (Windows)
 1. First run the following command to find out the processes running on this machine
