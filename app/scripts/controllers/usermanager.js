@@ -11,12 +11,11 @@
  * Controller of the thecorrespondentApp
  */
 angular.module('thecorrespondentApp')
-  .controller('UserManagerCtrl', ['$scope','serverFactory','$location', function($scope,serverFactory,$location) {
+  .controller('UserManagerCtrl', ['$scope','serverFactory','util','$location', function($scope,serverFactory,util,$location) {
     $scope.roleHelpText = "When creating users, you will need to define a role for a user. This role definition will decide what the user can and cannot do in the CMS. Choose a role in the drop-down to read a short description.";
     var userObject = serverFactory.getUserObject();
-    var isProduction = true;
     if (userObject === null){
-      if (isProduction){
+      if (util.isProduction()){
         alert('You got to this page without a valid login. You will now be redirected to the log in page.')
         $location.path( "/");
       }

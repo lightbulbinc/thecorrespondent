@@ -10,6 +10,9 @@
 angular.module('thecorrespondentApp')
   .factory('util', function () {
     return {
+      isProduction: function(){
+        return true;
+      },
       restAPIURL: function($location) {
         return $location.host() === 'localhost' ? 'http://localhost:9001/services/' : 'services/';
       },

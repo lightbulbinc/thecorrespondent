@@ -11,12 +11,11 @@
  * Controller of the thecorrespondentApp
  */
 angular.module('thecorrespondentApp')
-  .controller('PageManagerCtrl', ['$scope','serverFactory','$location',  function($scope,serverFactory,$location) {
+  .controller('PageManagerCtrl', ['$scope','serverFactory','util','$location',  function($scope,serverFactory,util,$location) {
     var userObject = serverFactory.getUserObject();
-    var isProduction = false;
     if (userObject === null){
       // IF PRODUCT
-      if (isProduction){
+      if (util.isProduction()){
         alert('You got to this page without a valid login. You will now be redirected to the log in page.')
         $location.path( "/");
       }
