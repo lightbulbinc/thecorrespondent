@@ -12,34 +12,56 @@
  */
 angular.module('thecorrespondentApp')
   .controller('PageManagerCtrl', ['$scope','serverFactory','$location',  function($scope,serverFactory,$location) {
-    // var userObject = serverFactory.getUserObject();
-    // if (userObject === null){
-    //   alert('You got to this page without a valid login. You will now be redirected to the log in page. Please refresh your browser to start again.')
-    //   $('#waitmodal').modal('hide');
-    //   $location.path( "/");
-    // }
-    // else {
-    //   $scope.userrole = userObject.role;
-    // }
-    // debug code - next line
-    $scope.userrole = 'w';
+    var userObject = serverFactory.getUserObject();
+    if (userObject === null){
+      // comment out the following two lines in debug mode
+      // alert('You got to this page without a valid login. You will now be redirected to the log in page.')
+      // $location.path( "/");
 
-    // this variable is used to identify when the page is completely loaded
-    $scope.pagelistupdating = true;
-    $scope.pagetypefilter = '';
-    $scope.pageloadingcounter = 0;
-    $('#waitmodal').modal('show');
-    $scope.pageloadingcounter += 1;
-    serverFactory.getpageitems($scope,'gotinitpageitems');
-    $scope.pageloadingcounter += 1;
-    serverFactory.getitems('pagetemplate',$scope,'gotpagetemplates');
-    $scope.pageloadingcounter += 1;
-    serverFactory.getitem(1,'appmetadata',$scope,'gotappmetadata');
-    $scope.pageloadingcounter += 1;
-    serverFactory.getmenu($scope,'gotmenuinit');
-    $scope.pidetailsurl = 'picontent';
-    $scope.listview = 'pageview';
-    $scope.appalerts = [];
+      //debug code
+      //comment out the following lines to $scope.appalerts = []; in production
+
+      $scope.userrole ='a';
+      $('#waitmodal').modal('show');
+      // this variable is used to identify when the page is completely loaded
+      $scope.pagelistupdating = true;
+      $scope.pagetypefilter = '';
+      $scope.pageloadingcounter = 0;
+      $scope.pageloadingcounter += 1;
+      serverFactory.getpageitems($scope,'gotinitpageitems');
+      $scope.pageloadingcounter += 1;
+      serverFactory.getitems('pagetemplate',$scope,'gotpagetemplates');
+      $scope.pageloadingcounter += 1;
+      serverFactory.getitem(1,'appmetadata',$scope,'gotappmetadata');
+      $scope.pageloadingcounter += 1;
+      serverFactory.getmenu($scope,'gotmenuinit');
+      $scope.pidetailsurl = 'picontent';
+      $scope.listview = 'pageview';
+      $scope.appalerts = [];
+
+
+    }
+    else {
+      $scope.userrole = userObject.role;
+      $('#waitmodal').modal('show');
+      // this variable is used to identify when the page is completely loaded
+      $scope.pagelistupdating = true;
+      $scope.pagetypefilter = '';
+      $scope.pageloadingcounter = 0;
+      $scope.pageloadingcounter += 1;
+      serverFactory.getpageitems($scope,'gotinitpageitems');
+      $scope.pageloadingcounter += 1;
+      serverFactory.getitems('pagetemplate',$scope,'gotpagetemplates');
+      $scope.pageloadingcounter += 1;
+      serverFactory.getitem(1,'appmetadata',$scope,'gotappmetadata');
+      $scope.pageloadingcounter += 1;
+      serverFactory.getmenu($scope,'gotmenuinit');
+      $scope.pidetailsurl = 'picontent';
+      $scope.listview = 'pageview';
+      $scope.appalerts = [];
+    }
+    // debug code - next line
+    // $scope.userrole = 'a';
 
 
     $scope.dontshowdialongagain = {

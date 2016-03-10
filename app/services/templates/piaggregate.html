@@ -151,7 +151,7 @@
 												<img src="images/wait.gif" alt="" / height="200px">
 											</div>
 											<ul class="article-array" ng-if="relatedstories!==null">
-												<li ng-repeat="relatedstory in relatedstories | limitTo:storylimit:storybegin"><a ng-href="relatedstory.pagename">{{relatedstory.title}}</a></li>
+												<li ng-repeat="relatedstory in relatedstories | limitTo:storylimit:storybegin"><a ng-href="{{relatedstory.pagename}}">{{relatedstory.title}}</a></li>
 											</ul>
 											<br />
 											<div class="article-links" align="right">

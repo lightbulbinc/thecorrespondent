@@ -11,11 +11,18 @@
  * Controller of the thecorrespondentApp
  */
 angular.module('thecorrespondentApp')
-  .controller('UserManagerCtrl', ['$scope','serverFactory', function($scope,serverFactory) {
-    // TODO:
-    // need to handle the case where a user comes to this page directly.
-    // Will use the login session (probably via the serverFactory), to check if this is a valid user, else send user to login page
-    // Or probably better is to display a message on the complete page saying something like "You need to log in..."
+  .controller('UserManagerCtrl', ['$scope','serverFactory','$location', function($scope,serverFactory,$location) {
+    $scope.roleHelpText = "When creating users, you will need to define a role for a user. This role definition will decide what the user can and cannot do in the CMS. Choose a role in the drop-down to read a short description.";
+    var userObject = serverFactory.getUserObject();
+    if (userObject === null){
+      alert('You got to this page without a valid login. You will now be redirected to the log in page.')
+      $location.path( "/");
+    }
+    else {
+      $scope.userrole = userObject.role;
+    }
+    // debug code - next line
+    // $scope.userrole = 'a';
 
     serverFactory.getitems('appuser',$scope,'gotappusers');
     $scope.gotappusers = function(data){
@@ -166,9 +173,21 @@ angular.module('thecorrespondentApp')
       serverFactory.getitems('appuser',$scope,'gotappusers');
     };
     // delete user - END
-
-    $scope.formgroupClass = function(){
-      return "form-group has-error";
-    }
+    $scope.showdesc = function(){
+      switch ($scope.appuserdata.role) {
+        case 'a':
+        $scope.roleHelpText = "User with <strong>ALL</strong> permissions. This user will be able to perform every task this is available in the CMS. <p class='text-danger'>Please be careful while giving Administrator access to any user.</p>";
+        break;
+        case 'e':
+        $scope.roleHelpText = "User with editors permissions. This user will be able performs all editorial tasks.<p class='text-info'>The user will not, for example, be given access to the User manager console.</p>";
+        break;
+        case 'w':
+        $scope.roleHelpText = "User with correspondent permissions. This user will be able performs story editorial tasks. The user will be able to create and publish stories. However, the user will NOT have access to create or view aggregate pages.";
+        break;
+        case 'n':
+         $scope.roleHelpText = "User with <strong>NO</strong> permissions. For example, use this to remove all permissions for a user but retain the user in your system.";
+        break;
+      }
+    };
 
   }]);

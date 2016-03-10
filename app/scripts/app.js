@@ -14,7 +14,7 @@ angular
     // 'ngCookies',
     // 'ngResource',
     'ngRoute',
-    // 'ngSanitize',
+    'ngSanitize',
     // 'ngTouch',
     'ngCkeditor'
   ])

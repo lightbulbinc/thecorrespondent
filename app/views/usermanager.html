@@ -66,13 +66,13 @@
           </div>
           <div class="form-group">
             <label for="userrole">Role</label>
-            <select class="form-control" ng-model='appuserdata.role'>
+            <select class="form-control" ng-model='appuserdata.role' ng-change="showdesc()">
               <option value='a'>Administrator</option>
               <option value='e'>Editor</option>
               <option value='w'>Correspondent</option>
               <option value='n'>None</option>
             </select>
-            <span id="helpBlock" class="help-block">The 'None' role is used to create users with no permissions. For example, use this to remove all permissions for a user but retain the user in your system.</span>
+            <span ng-bind-html='roleHelpText' class="help-block">The 'None' role is used to create users with no permissions. For example, use this to remove all permissions for a user but retain the user in your system.</span>
           </div>
         </form>
 

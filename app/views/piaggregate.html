@@ -14,6 +14,19 @@
             <button type="button" class="btn btn-danger btn-xs" title="Remove this story" ng-click="removeaggregateitemfromcolumn($index,pageitemdetailsdata.aggregatecolumn[0])"><span class="glyphicon glyphicon-minus"></span></button>
           </p>
         </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Add <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[0],"pageitem","picontent")'>Story</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </div>
+
         <button type="button" class="btn btn-primary btn-xs"
           ng-click='addaggregateitemtocolumn(pageitemdetailsdata.aggregatecolumn[0],"pageitem","picontent")'
           title='Add a single story to the aggregate'
